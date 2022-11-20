@@ -1,6 +1,7 @@
 Select *
 From PortfolioProject.dbo.NashvilleHousing 
--------------------------------------------------------------------------------------------------------------------------- -- Standardize Date Format
+---------------------------- Standardize Date Format
+
 Select saleDateConverted, CONVERT(Date,SaleDate)
 From PortfolioProject.dbo.NashvilleHousing 
 
@@ -11,8 +12,9 @@ ALTER TABLE NashvilleHousing
 Add SaleDateConverted Date; 
 Update NashvilleHousing
 SET SaleDateConverted = CONVERT(Date,SaleDate)
- -------------------------------------------------------------------------------------------------------------------------- -- Populate Property Address data
- Select *
+
+ ------------------------------------- Populate Property Address data
+Select *
 From PortfolioProject.dbo.NashvilleHousing
 --Where PropertyAddress is null
 order by ParcelID 
@@ -31,9 +33,11 @@ JOIN PortfolioProject.dbo.NashvilleHousing b
                 AND a.[UniqueID ] <> b.[UniqueID ]
 Where a.PropertyAddress is null
 
- -------------------------------------------------------------------------------------------------------------------------- -- Breaking out Address into Individual Columns (Address, City, State)
+ ------------------------------------- -- Breaking out Address into Individual Columns (Address, City, State)
 Select PropertyAddress
-From PortfolioProject.dbo.NashvilleHousing--Where PropertyAddress is null--order by ParcelID 
+From PortfolioProject.dbo.NashvilleHousing
+--Where PropertyAddress is null
+--order by ParcelID 
 SELECT
 SUBSTRING(PropertyAddress, 1, CHARINDEX(',', PropertyAddress) -1 ) as Address
 , SUBSTRING(PropertyAddress, CHARINDEX(',', PropertyAddress) + 1 , LEN(PropertyAddress)) as Address 
@@ -76,7 +80,8 @@ SET OwnerSplitState = PARSENAME(REPLACE(OwnerAddress, ',', '.') , 1)
 Select *
 From PortfolioProject.dbo.NashvilleHousing
 
---------------------------------------------------------------------------------------------------------------------------------------------------------- -- Remove Duplicates 
+------------------------- -- Remove Duplicates 
+
 WITH RowNumCTE AS(
 Select *,	
        ROW_NUMBER() OVER (	
